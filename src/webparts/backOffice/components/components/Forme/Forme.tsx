@@ -42,9 +42,7 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
     const { name, value } = e.target;
 
 
-    // Vérifiez le type de l'élément cible
     if (e.target instanceof HTMLInputElement) {
-      // Logique spécifique pour les input
       if (name === 'deadline') {
         const date = new Date(value);
         setFormData(prevState => ({
@@ -58,7 +56,6 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
         }));
       }
     } else if (e.target instanceof HTMLSelectElement || e.target instanceof HTMLTextAreaElement) {
-      // Logique spécifique pour les select et les textarea
       setFormData(prevState => ({
         ...prevState,
         [name]: value,
@@ -155,7 +152,7 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
                     required
                   >
                     <option value="">Select a category</option>
-                    <option value="IT">IT</option>
+                    <option value="Fonction Support">Fonction Support</option>
                     <option value="Tech">Tech</option>
                     <option value="CRM">CRM</option>
                   </select>
