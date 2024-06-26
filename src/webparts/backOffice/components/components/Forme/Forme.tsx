@@ -4,6 +4,7 @@ import { submitForm, getFormData, updateFormEntry, deleteFormEntry } from './For
 import styles from './Forme.module.scss';
 import Header from '../Header/navbar';
 import Footer from '../Footer/footer';
+import * as Modal from 'react-modal';
 
 export const Forme: React.FC<IFormProps> = ({ context }) => {
   const [formData, setFormData] = React.useState<IFormData>({
@@ -20,6 +21,7 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
 
   const [formEntries, setFormEntries] = React.useState<IFormData[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   React.useEffect(() => {
     fetchFormData();
@@ -40,7 +42,6 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-
 
     if (e.target instanceof HTMLInputElement) {
       if (name === 'deadline') {
@@ -73,9 +74,17 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOpenModal = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsModalOpen(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmSubmit = async () => {
+    setIsModalOpen(false);
 
     if (isSubmitting) {
       return;
@@ -134,7 +143,7 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
           <div>
             <div style={{ marginBottom: '50px' }}></div>
             <div style={{ position: 'relative' }}>
-              <form className={styles.formContainer1} onSubmit={handleSubmit}>
+              <form className={styles.formContainer1} onSubmit={handleOpenModal}>
                 <div className={styles.inputField}>
                   <input type="text1" id="offre_title" name="offre_title" value={formData.offre_title} onChange={handleInputChange} placeholder="Title" className={styles.OffreTitle} style={{ backgroundColor: '#F5F9FF', height: '40px', width: '709px' }} />
                 </div>
@@ -235,6 +244,31 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
                   </div>
                 </div>
               </form>
+              <Modal isOpen={isModalOpen} onRequestClose={handleCloseModal} className={styles.modal} overlayClassName={styles.overlay}>
+                <h2>Verify your details</h2>
+                <div>
+                  <p><strong>Title:</strong> {formData.offre_title}</p>
+                  <p><strong>Short Description:</strong> {formData.short_description}</p>
+                  <p><strong>Deadline:</strong> {formData.deadline.toDateString()}</p>
+                  <p><strong>City:</strong> {formData.city}</p>
+                  <p><strong>Category:</strong> {formData.category}</p>
+                  <p><strong>File Type:</strong> {formData.fileType}</p>
+                  <p><strong>File:</strong> {formData.file ? formData.file.name : 'No file selected'}</p>
+                </div>
+                <div className={styles.modalButtons}>
+                  <button className={styles.modalButton1} onClick={handleCloseModal}> <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 34 34"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M10.2609 25.4956H4.25V19.4847L20.4496 3.28514C20.7152 3.01956 21.0755 2.87036 21.4512 2.87036C21.8268 2.87036 22.1871 3.01956 22.4527 3.28514L26.4605 7.29147C26.5922 7.42305 26.6967 7.57929 26.768 7.75127C26.8393 7.92325 26.876 8.10759 26.876 8.29377C26.876 8.47994 26.8393 8.66429 26.768 8.83627C26.6967 9.00825 26.5922 9.16449 26.4605 9.29606L10.2609 25.4956ZM4.25 28.329H29.75V31.1623H4.25V28.329Z" fill="#FEC46D" />
+                  </svg>
+                  </button>
+                  <button className={styles.modalButton2} onClick={handleConfirmSubmit} disabled={isSubmitting}>Confirm & Submit</button>
+                </div>
+              </Modal>
               <div style={{ width: '100%', maxWidth: '9000px', margin: '0 auto' }}>
                 <h2 className={styles.recordsTitle}>Records</h2>                <div className={styles.recordsContainer} >
                   {formEntries.map((entry, index) => (
