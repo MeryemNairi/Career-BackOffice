@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IFormProps, IFormData } from './IFormProps';
 import { submitForm, getFormData, updateFormEntry, deleteFormEntry } from './FormeService';
 import styles from './Forme.module.scss';
-import Header from '../Header/navbar';
+import Navbar from '../../Header/navbar';
 import Footer from '../Footer/footer';
 import * as Modal from 'react-modal';
 
@@ -16,7 +16,9 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
     fileType: 'pdf',
     file: null,
     fileName: '',
-    category: ''
+    category: '',
+    link: ''
+
   });
 
   const [formEntries, setFormEntries] = React.useState<IFormData[]>([]);
@@ -107,7 +109,9 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
         fileType: 'pdf',
         file: null,
         fileName: '',
-        category: ''
+        category: '',
+        link: ''
+
       });
       alert('Form submitted successfully!');
       fetchFormData();
@@ -138,7 +142,7 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
   return (
     <>
       <div style={{ width: '100%', maxWidth: '9000px', margin: '0 auto', padding: '0 20px' }}>
-        <Header />
+        <Navbar />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div>
             <div style={{ marginBottom: '50px' }}></div>
@@ -166,6 +170,18 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
                     <option value="CRM">CRM</option>
                   </select>
                 </div>
+                <span> </span>
+                <div className={styles.inputField}>
+                  <input
+                    type="text"
+                    name="link"
+                    value={formData.link}
+                    onChange={handleInputChange}
+                    placeholder="Enter a link"
+                    style={{ backgroundColor: '#F5F9FF', height: '20px', width: '685px' }}              
+                  />
+                </div>
+
                 <span>&nbsp;</span>
                 <div className={styles.inputContainer}>
                   <div className={styles.inputField}>
@@ -252,6 +268,7 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
                   <p><strong>Deadline:</strong> {formData.deadline.toDateString()}</p>
                   <p><strong>City:</strong> {formData.city}</p>
                   <p><strong>Category:</strong> {formData.category}</p>
+                  <p><strong>Link</strong> {formData.link}</p>
                   <p><strong>File Type:</strong> {formData.fileType}</p>
                   <p><strong>File:</strong> {formData.file ? formData.file.name : 'No file selected'}</p>
                 </div>
@@ -278,6 +295,7 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
                       <div className={styles.recordField}>{entry.deadline.toLocaleDateString()}</div>
                       <div className={styles.recordField}>{entry.city}</div>
                       <div className={styles.recordField}>{entry.category}</div>
+                      <div className={styles.recordField}>{entry.link}</div>
                       <div className={styles.recordField}>
                         {entry.fileUrl ? (
                           <span onClick={() => window.open(entry.fileUrl, '_blank')}>

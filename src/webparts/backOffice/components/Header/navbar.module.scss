@@ -7,22 +7,20 @@ ul {
 
 /* navbar */
 .navbar {
-  background-color: #95B9FA;
+  background-color: #90B4F5;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 40px;
-  min-height: 35px;
+  min-height: 70px;
 
   a {
     text-decoration: none;
-    color: #2B466C;
+    color: #FFFFFF;
     font-size: 1.5rem;
   }
 }
-
-
 
 
 /* logo  */
@@ -43,9 +41,7 @@ ul {
 /* Navlinks */
 
 .navLink {
-  font-size: 14px;
-  color: #2B466C;
-  font-weight: bold; /* Required for positioning the underline */
+  position: relative; /* Required for positioning the underline */
 }
 
 .navLink::after {
@@ -55,7 +51,7 @@ ul {
   height: 2px;
   bottom: -10px;
   left: 0;
-  background-color: #1E2E4A;
+  background-color: #00966C;
   transition: width 0.3s ease;
 }
 

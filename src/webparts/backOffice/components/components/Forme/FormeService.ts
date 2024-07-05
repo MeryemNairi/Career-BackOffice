@@ -16,7 +16,9 @@ export const submitForm = async (formData: IFormData) => {
       fileType: formData.fileType, 
       fileUrl: fileUrl,
       fileName: formData.file ? formData.file.name : '',
-      category: formData.category // Added category
+      category: formData.category ,
+      link: formData.link 
+
     });
   } catch (error) {
     console.error('Error submitting form:', error);
@@ -27,7 +29,7 @@ export const submitForm = async (formData: IFormData) => {
 export const getFormData = async (): Promise<IFormData[]> => {
   try {
     const list = sp.web.lists.getByTitle('BackOfficeV1');
-    const items = await list.items.select('Id', 'offre_title', 'short_description', 'deadline', 'city', 'fileType', 'fileUrl', 'fileName', 'category').get();
+    const items = await list.items.orderBy('Id', false).select('Id', 'offre_title', 'short_description', 'deadline', 'city', 'fileType', 'fileUrl', 'fileName', 'category','link' ).get();
     return items.map((item: any) => ({
       id: item.Id,
       offre_title: item.offre_title,
@@ -38,7 +40,9 @@ export const getFormData = async (): Promise<IFormData[]> => {
       file: null,
       fileUrl: item.fileUrl,
       fileName: item.fileName,
-      category: item.category // Added category
+      category: item.category ,
+      link: item.link 
+
     }));
   } catch (error) {
     console.error('Error fetching form data:', error);
@@ -55,7 +59,9 @@ export const updateFormEntry = async (id: number, formData: IFormData) => {
       deadline: formData.deadline.toISOString(), 
       city: formData.city, 
       fileType: formData.fileType,
-      category: formData.category // Added category
+      category: formData.category ,
+      link: formData.link
+
     });
   } catch (error) {
     console.error('Error updating form entry:', error);
