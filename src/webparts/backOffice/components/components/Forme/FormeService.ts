@@ -78,3 +78,51 @@ export const deleteFormEntry = async (id: number) => {
     throw new Error('An error occurred while deleting the form entry. Please try again.');
   }
 };
+
+export const deleteFormDataBeforeToday = async () => {
+
+  try {
+
+    const list = sp.web.lists.getByTitle('BackOfficeV1');
+
+
+
+    const tomorrow = new Date();
+
+    tomorrow.setDate(tomorrow.getDate() - 1);
+
+
+
+    // Filtrer les éléments dont la deadline est strictement inférieure à "aujourd'hui + 1 jour"
+
+    const items = await list.items
+
+      .select('Id', 'deadline')
+
+      .filter(`deadline lt datetime'${tomorrow.toISOString()}'`)
+
+      .get();
+
+
+
+    // Supprimer les éléments filtrés
+
+    await Promise.all(items.map(async (item: any) => {
+
+      await list.items.getById(item.Id).delete();
+
+    }));
+
+
+
+    console.log('Entries deleted successfully.');
+
+  } catch (error) {
+
+    console.error('Error deleting form entries before today:', error);
+
+    throw new Error('An error occurred while deleting form entries before today. Please try again.');
+
+  }
+
+};

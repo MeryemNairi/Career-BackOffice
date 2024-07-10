@@ -12,6 +12,6 @@ export interface IFormData {
   file: File | null;
   fileName: string;
   fileUrl?: string;
-  category: string; 
-  link: string; 
+  category: string;
+  link: string;
 }

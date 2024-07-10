@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { IFormProps, IFormData } from './IFormProps';
-import { submitForm, getFormData, updateFormEntry, deleteFormEntry } from './FormeService';
-import styles from './Forme.module.scss';
+import { submitForm, getFormData, updateFormEntry, deleteFormEntry,deleteFormDataBeforeToday  } from './FormeService';import styles from './Forme.module.scss';
 import Navbar from '../../Header/navbar';
 import Footer from '../Footer/footer';
 import * as Modal from 'react-modal';
@@ -26,20 +25,38 @@ export const Forme: React.FC<IFormProps> = ({ context }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   React.useEffect(() => {
+
     fetchFormData();
+
   }, []);
 
+
+
   const fetchFormData = async () => {
+
     try {
+
+      await deleteFormDataBeforeToday(); 
       const formData = await getFormData();
+
       const modifiedFormData = formData.map(entry => ({
+
         ...entry,
-        fileName: entry.fileUrl ? entry.fileUrl.substring(entry.fileUrl.lastIndexOf('/') + 1) : ''
+
+        fileName: entry.fileUrl ? entry.fileUrl.substring(entry.fileUrl.lastIndexOf('/') ) : ''
+
       }));
+
       setFormEntries(modifiedFormData);
+
+
+
     } catch (error) {
+
       console.error('Error fetching form data:', error);
+
     }
+
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
